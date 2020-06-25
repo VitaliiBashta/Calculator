@@ -14,7 +14,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Calculator {
+    private static final Logger LOG = Logger.getLogger(Calculator.class.getName());
     private final int dividePrecision;
+
     public Calculator(int dividePrecision) {
         this.dividePrecision = dividePrecision;
     }
@@ -22,8 +24,6 @@ public class Calculator {
     public Calculator() {
         this(100);
     }
-
-    private static final Logger LOG = Logger.getLogger(Calculator.class.getName());
 
     public static void main(String[] args) {
         if (args.length < 1) {

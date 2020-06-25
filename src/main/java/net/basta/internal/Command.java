@@ -2,8 +2,9 @@ package net.basta.internal;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
+import java.util.function.Function;
 
-public class Command {
+public class Command implements Function<BigDecimal, BigDecimal> {
     private final String operation;
     private final BigDecimal value;
     private final MathContext mathContext;
@@ -12,10 +13,6 @@ public class Command {
         this.operation = operation;
         this.value = value;
         this.mathContext = new MathContext(dividePrecision);
-    }
-
-    public Command(String operation, BigDecimal value) {
-        this(operation, value, 100);
     }
 
     public BigDecimal apply(BigDecimal leftOperand) {
