@@ -28,6 +28,7 @@ public class Calculator {
     public static void main(String[] args) {
         if (args.length < 1) {
             LOG.log(Level.SEVERE, "Command usage:  java Calculator <filename of input data> [dividePrecision]");
+            return;
         }
         String inputFilename = args[0];
         int dividePrecision = 100;
