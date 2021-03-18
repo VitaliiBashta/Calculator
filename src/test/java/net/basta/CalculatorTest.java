@@ -32,7 +32,8 @@ public class CalculatorTest {
     @Test
     public void allSamplesCalculatorTest() {
         for (List<String> testSample : testSamples) {
-            BigDecimal expectedResult = new BigDecimal(testSample.get(0));
+            String expectedString = testSample.get(0);
+            BigDecimal expectedResult = expectedString.equals("null") ? null : new BigDecimal(expectedString);
 
             Path tempFile = Util.writeSampleToFile(testSample);
             BigDecimal result = calculator.calculate(tempFile.toString());
@@ -40,8 +41,4 @@ public class CalculatorTest {
         }
 
     }
-
-
-
-
 }

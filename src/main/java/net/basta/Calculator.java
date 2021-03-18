@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +44,7 @@ public class Calculator {
         }
     }
 
-    public BigDecimal calculate(String fileName)  {
+    public BigDecimal calculate(String fileName) {
         Stream<String> inputLines;
         try {
             inputLines = Files.lines(Paths.get(fileName));
@@ -53,33 +52,14 @@ public class Calculator {
             throw new IllegalArgumentException("File " + fileName + "not found");
         }
         List<Command> commands = inputLines
-                .map(this::parseCommand)
+                .map(line -> Command.of(line, dividePrecision))
                 .collect(Collectors.toList());
-        List<Command> commandsOrdered = moveApplyCommandToFirstOperation(commands);
-        BigDecimal result = new BigDecimal(0);
-        for (Command command : commandsOrdered) {
+        BigDecimal result = commands.isEmpty() ? null : commands.get(commands.size() - 1).getValue();
+
+        for (Command command : commands) {
             result = command.apply(result);
         }
         return result;
     }
 
-    private Command parseCommand(String line) {
-        String[] pair = line.split(" ");
-        BigDecimal value;
-        try {
-            value = new BigDecimal(pair[1]);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Illegal input", e);
-        }
-        return new Command(pair[0], value, dividePrecision);
-    }
-
-    private List<Command> moveApplyCommandToFirstOperation(List<Command> commands) {
-        List<Command> result = new ArrayList<>(commands);
-        if (!result.isEmpty()) {
-            Command lastItem = result.remove(result.size() - 1);
-            result.add(0, lastItem);
-        }
-        return result;
-    }
 }
