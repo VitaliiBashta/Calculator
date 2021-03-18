@@ -27,14 +27,21 @@ public class Command implements Function<BigDecimal, BigDecimal> {
     }
 
     public BigDecimal apply(BigDecimal leftOperand) {
-        return switch (operation) {
-            case "add" -> leftOperand.add(value);
-            case "subtract" -> leftOperand.subtract(value);
-            case "multiply" -> leftOperand.multiply(value);
-            case "divide" -> leftOperand.divide(value, mathContext);
-            case "pow" -> leftOperand.pow(value.intValue(), mathContext);
-            case "apply" -> leftOperand;
-            default -> throw new IllegalArgumentException("Unknown operation: " + operation);
-        };
+        switch (operation) {
+            case "add":
+                return leftOperand.add(value);
+            case "subtract":
+                return leftOperand.subtract(value);
+            case "multiply":
+                return leftOperand.multiply(value);
+            case "divide":
+                return leftOperand.divide(value, mathContext);
+            case "pow":
+                return leftOperand.pow(value.intValue(), mathContext);
+            case "apply":
+                return leftOperand;
+            default:
+                throw new IllegalArgumentException("Unknown operation: " + operation);
+        }
     }
 }
