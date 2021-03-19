@@ -34,23 +34,18 @@ public class Calculator {
         if (args.length == 2) {
             dividePrecision = Integer.parseInt(args[1]);
         }
-        LOG.info("Reading input data from" + inputFilename);
+        LOG.info(() -> "Reading input data  {}" + inputFilename);
         Calculator calculator = new Calculator(dividePrecision);
         if (Files.exists(Paths.get(inputFilename))) {
-            System.out.println(calculator.calculate(inputFilename));
+            LOG.info(() -> calculator.calculate(inputFilename).toString());
 
         } else {
-            LOG.log(Level.SEVERE, "File not found: " + inputFilename);
+            LOG.severe(() -> "File not found: " + inputFilename);
         }
     }
 
     public BigDecimal calculate(String fileName) {
-        Stream<String> inputLines;
-        try {
-            inputLines = Files.lines(Paths.get(fileName));
-        } catch (IOException e) {
-            throw new IllegalArgumentException("File " + fileName + "not found");
-        }
+        Stream<String> inputLines = getStringStream(fileName);
         List<Command> commands = inputLines
                 .map(line -> Command.of(line, dividePrecision))
                 .collect(Collectors.toList());
@@ -60,6 +55,16 @@ public class Calculator {
             result = command.apply(result);
         }
         return result;
+    }
+
+    private Stream<String> getStringStream(String fileName) {
+        Stream<String> inputLines;
+        try {
+            inputLines = Files.lines(Paths.get(fileName));
+        } catch (IOException e) {
+            throw new IllegalArgumentException("File " + fileName + "not found");
+        }
+        return inputLines;
     }
 
 }

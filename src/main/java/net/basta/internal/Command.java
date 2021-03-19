@@ -2,9 +2,9 @@ package net.basta.internal;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
-public class Command implements Function<BigDecimal, BigDecimal> {
+public class Command implements UnaryOperator<BigDecimal> {
     private final String operation;
     private final BigDecimal value;
     private final MathContext mathContext;
